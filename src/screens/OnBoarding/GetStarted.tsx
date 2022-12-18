@@ -8,9 +8,9 @@ import {
 } from 'react-native';
 import React from 'react';
 import {Colors, Images} from '../../theme';
-import {SButton} from '../../components';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {SButton} from '../../components';
 
 const GetStarted = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
@@ -18,7 +18,7 @@ const GetStarted = () => {
   return (
     <View style={styles.parent}>
       <StatusBar backgroundColor={Colors.WHITE} barStyle="dark-content" />
-      <Text style={styles.welcomeText}>{'Welcome to Salhakaar'}</Text>
+      <Text style={styles.welcomeText}>{'Welcome Consultant'}</Text>
       <SButton
         title="Get Started"
         onPress={() => navigation.navigate('Login')}

@@ -1,18 +1,29 @@
 import {
   StyleSheet,
-  Text,
   View,
   Alert,
   FlatList,
-  ListRenderItem,
+  Text,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {ConsultantApi} from '../../service';
 import {Colors} from '../../theme';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import {DEVICE_HEIGHT, DEVICE_WIDTH} from '../../utils';
+import {BannerSlider} from '../../components';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+
+const bannerImages = [
+  {uri: 'https://picsum.photos/200/300'},
+  {uri: 'https://picsum.photos/200/400'},
+  {uri: 'https://picsum.photos/200/500'},
+];
 
 const Home = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
+
   const [data, setData] = useState<Array<Consultant>>([]);
 
   useEffect(() => {
@@ -27,43 +38,53 @@ const Home = () => {
     callApi();
   }, []);
 
-  const renderItem: ListRenderItem<Consultant> = ({item}) => (
-    <View
-      style={{
-        flexDirection: 'row',
-        marginHorizontal: 18,
-        marginBottom: 24,
-        borderRadius: 8,
-        borderWidth: 1,
-        borderColor: 'black',
-        overflow: 'hidden',
-      }}>
-      <View style={{margin: 4, borderRadius: 8, overflow: 'hidden'}}>
-        <Image
-          source={{uri: item.image}}
-          style={{height: 80, width: 80, resizeMode: 'stretch'}}
-        />
-      </View>
-      <View>
-        <Text style={{color: 'black'}}>{item.name}</Text>
-        <Text
-          style={{
-            color: 'black',
-          }}>
-          {`${item.avgRating}\u2605 (${item.totalRatings} Ratings)`}
-        </Text>
-        <Icon name="star" size={25} color="yellow" />
-      </View>
-    </View>
-  );
-
   return (
-    <View style={{flex: 1, backgroundColor: Colors.WHITE, paddingVertical: 24}}>
-      <FlatList data={data} renderItem={renderItem} />
+    <View style={styles.parent}>
+      <View style={{backgroundColor: Colors.PRIMARY}}>
+        <View style={styles.banner}>
+          <BannerSlider data={bannerImages} />
+        </View>
+      </View>
+      <Text style={styles.heading}>Top Rated Consultants</Text>
+      <FlatList
+        keyExtractor={item => item._id}
+        data={data}
+        renderItem={({item}) => {
+          return (
+            <TouchableOpacity
+              style={{marginLeft: 9}}
+              onPress={() =>
+                navigation.navigate('ConsultantDetails', {id: item._id})
+              }>
+              <Image
+                source={{uri: item.image}}
+                style={{
+                  height: 100,
+                  width: DEVICE_WIDTH / 2 - 18,
+                  resizeMode: 'contain',
+                  backgroundColor: Colors.SECONDARY,
+                }}
+              />
+            </TouchableOpacity>
+          );
+        }}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+      />
     </View>
   );
 };
 
 export default Home;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  parent: {
+    flex: 1,
+  },
+  banner: {
+    height: DEVICE_HEIGHT / 4,
+  },
+  heading: {
+    color: Colors.CHARCOAL_GREY,
+  },
+});
