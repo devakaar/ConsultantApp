@@ -1,75 +1,64 @@
+import React, {useState} from 'react';
 import {
   Dimensions,
   Image,
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   View,
-  Alert,
 } from 'react-native';
-import React from 'react';
 import {Colors, Images} from '../../theme';
-import {
-  GoogleSigninButton,
-  GoogleSignin,
-} from '@react-native-google-signin/google-signin';
 import {LoginApi} from '../../service';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import AxiosInstance from '../../service/Instance';
+import {SButton} from '../../components';
 
 const Login = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
 
-  GoogleSignin.configure({
-    webClientId:
-      '767756685217-sd72181jdfi6dl14sv7ierjs05hgc52f.apps.googleusercontent.com',
-  });
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
-  const googleSignin = async () => {
-    try {
-      const response = await GoogleSignin.signIn();
-      const user = response.user;
-      const body = {
-        email: user.email,
-        password: user.id,
-        name: user.name ?? user.givenName ?? 'User',
-      };
-      const apiResponse = (await LoginApi.login(body)).data.data;
-      AxiosInstance.defaults.headers.common.token = apiResponse.token;
-      navigation.navigate('BottomTabs');
-    } catch (err: any) {
-      Alert.alert(err);
-    }
+  const login = async () => {
+    const body = {
+      email: username,
+      password: password,
+      fcmToken: 'ABCDEF',
+    };
+    LoginApi.login(body).then(res => {
+      const token = res.data.data.token;
+      AsyncStorage.setItem('token', token ?? '').then(() => {
+        AxiosInstance.defaults.headers.common.token = token;
+        navigation.navigate('BottomTabs');
+      });
+    });
   };
 
   return (
     <View style={styles.parent}>
       <StatusBar backgroundColor={Colors.PRIMARY} barStyle="light-content" />
-      <View
-        style={{
-          backgroundColor: '#dfdfdf',
-          flex: 4,
-          justifyContent: 'center',
-        }}>
+      <View>
         <Image source={Images.logo} style={styles.logo} />
-        <Text
-          style={{
-            alignSelf: 'center',
-            color: Colors.PRIMARY,
-            fontWeight: 'bold',
-            fontSize: 24,
-          }}>
-          Salhakaar
-        </Text>
+        <Text style={styles.text}>Salhakaar</Text>
       </View>
-      <View style={{justifyContent: 'center', flex: 1}}>
-        <GoogleSigninButton
-          style={{width: '90%', alignSelf: 'center'}}
-          color={0}
-          onPress={googleSignin}
-        />
-      </View>
+      <TextInput
+        value={username}
+        onChangeText={setUsername}
+        style={styles.textInput}
+        placeholder="Username"
+        placeholderTextColor={Colors.GRAVEL_GREY}
+      />
+      <TextInput
+        value={password}
+        onChangeText={setPassword}
+        style={styles.textInput}
+        placeholder="Password"
+        placeholderTextColor={Colors.GRAVEL_GREY}
+      />
+      <SButton title="Login" onPress={login} />
     </View>
   );
 };
@@ -77,7 +66,7 @@ const Login = () => {
 export default Login;
 
 const styles = StyleSheet.create({
-  parent: {flex: 1, backgroundColor: Colors.WHITE},
+  parent: {flex: 1, backgroundColor: Colors.WHITE, paddingHorizontal: 18},
   logo: {
     width: Dimensions.get('window').height / 5,
     height: 'auto',
@@ -85,5 +74,20 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginTop: 24,
     alignSelf: 'center',
+  },
+  text: {
+    alignSelf: 'center',
+    color: Colors.PRIMARY,
+    fontWeight: 'bold',
+    fontSize: 24,
+    marginBottom: 28,
+  },
+  textInput: {
+    backgroundColor: '#EEEEEE', //TODO color from colors file
+    color: Colors.CHARCOAL_GREY,
+    borderRadius: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    marginTop: 18,
   },
 });

@@ -1,19 +1,18 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import HomeStack from './HomeStack';
-import ChatStack from './ChatStack';
-import ProfileStack from './ProfileStack';
+import {Profile} from '../screens/Profile';
+import {ChatList} from '../screens/Chat';
 
 const BottomNavigator = () => {
   const Tabs = createBottomTabNavigator<BottomStack>();
   return (
     <Tabs.Navigator
-      initialRouteName="HomeStack"
+      initialRouteName="ChatList"
       screenOptions={{headerShown: false}}>
       <Tabs.Screen
-        name="ChatStack"
-        component={ChatStack}
+        name="ChatList"
+        component={ChatList}
         options={{
           tabBarLabel: 'Chat',
           tabBarIcon: ({color, size}) => (
@@ -22,18 +21,8 @@ const BottomNavigator = () => {
         }}
       />
       <Tabs.Screen
-        name="HomeStack"
-        component={HomeStack}
-        options={{
-          tabBarLabel: 'Home',
-          tabBarIcon: ({color, size}) => (
-            <MaterialIcons name="home" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="ProfileStack"
-        component={ProfileStack}
+        name="Profile"
+        component={Profile}
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({color, size}) => (

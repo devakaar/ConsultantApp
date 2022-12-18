@@ -1,14 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
-import React, {type PropsWithChildren} from 'react';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import RootNavigator from './src/navigators/RootNavigator';
 import AxiosInstance from './src/service/Instance';
