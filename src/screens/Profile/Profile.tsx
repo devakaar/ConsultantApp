@@ -1,6 +1,5 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {Colors} from '../../theme';
@@ -9,11 +8,6 @@ const Profile = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
   const onPressLogOut = async () => {
     console.log(' beforeee logout ');
-    const response = await GoogleSignin.signOut();
-    console.log('logout ', response);
-    if (response) {
-      navigation.navigate('Login');
-    }
   };
 
   return (
@@ -57,10 +51,10 @@ const Profile = () => {
           </Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.containerWrapper}>
+      {/* <View style={styles.containerWrapper}>
         <View style={{height: 200, backgroundColor: Colors.PRIMARY}} />
         <View style={[styles.flexOne, {backgroundColor: Colors.PRIMARY}]} />
-      </View>
+      </View> */}
     </View>
   );
 };

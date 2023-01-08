@@ -28,13 +28,15 @@ const Login = () => {
       password: password,
       fcmToken: 'ABCDEF',
     };
-    LoginApi.login(body).then(res => {
-      const token = res.data.data.token;
-      AsyncStorage.setItem('token', token ?? '').then(() => {
-        AxiosInstance.defaults.headers.common.token = token;
-        navigation.navigate('BottomTabs');
-      });
-    });
+    LoginApi.login(body)
+      .then(res => {
+        const token = res.data.data.token;
+        AsyncStorage.setItem('token', token ?? '').then(() => {
+          AxiosInstance.defaults.headers.common.token = token;
+          navigation.navigate('BottomTabs');
+        });
+      })
+      .catch(err => console.log('error ', err));
   };
 
   return (
@@ -56,6 +58,7 @@ const Login = () => {
         onChangeText={setPassword}
         style={styles.textInput}
         placeholder="Password"
+        secureTextEntry
         placeholderTextColor={Colors.GRAVEL_GREY}
       />
       <SButton title="Login" onPress={login} />

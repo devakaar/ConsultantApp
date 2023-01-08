@@ -1,4 +1,4 @@
-import ConsultantApi from './ConsultantApi';
 import LoginApi from './LoginApi';
+import MeetingsApi from './MeetingsApi';
 
-export {LoginApi, ConsultantApi};
+export {LoginApi, MeetingsApi};
