@@ -49,7 +49,7 @@ const ChatList = () => {
         <FastImage
           style={styles.image}
           source={{
-            uri: item.user.image || 'https://unsplash.it/400/400?image=1',
+            uri: item?.user?.image || 'https://unsplash.it/400/400?image=1',
             priority: FastImage.priority.normal,
           }}
           resizeMode={FastImage.resizeMode.contain}
@@ -81,8 +81,12 @@ const ChatList = () => {
 
   return (
     <View style={styles.listContainer}>
-      <Header title="Chat" canGoBack={false} />
-      <View style={styles.listContainer}>
+      <Header
+        title="Chat"
+        canGoBack={false}
+        backgroundColor={Colors.SECONDARY}
+      />
+      <View style={[styles.listContainer, {backgroundColor: Colors.WHITE}]}>
         <FlatList
           keyExtractor={_item => _item._id}
           data={data}

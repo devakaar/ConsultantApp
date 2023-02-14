@@ -11,6 +11,7 @@ import {useNavigation} from '@react-navigation/native';
 import AxiosInstance from '../service/Instance';
 import {Chat} from '../screens/Chat';
 import {CallScreen} from '../screens/CallScreen';
+import PaymentHistory from '../screens/Profile/PaymentHistory';
 
 const RootNavigator = () => {
   const Stack = createNativeStackNavigator<RootStack>();
@@ -33,6 +34,7 @@ const RootNavigator = () => {
       <Stack.Screen name="BottomTabs" component={BottomNavigator} />
       <Stack.Screen name="Chat" component={Chat} />
       <Stack.Screen name="CallScreen" component={CallScreen} />
+      <Stack.Screen name="PaymentHistory" component={PaymentHistory} />
     </Stack.Navigator>
   );
 };

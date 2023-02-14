@@ -91,8 +91,12 @@ const UpcomingMeetings = () => {
 
   return (
     <View style={styles.listContainer}>
-      <Header title="Upcoming Meetings" canGoBack={false} />
-      <View style={styles.listContainer}>
+      <Header
+        title="Upcoming Meetings"
+        canGoBack={false}
+        backgroundColor={Colors.SECONDARY}
+      />
+      <View style={[styles.listContainer, {backgroundColor: Colors.WHITE}]}>
         <FlatList
           keyExtractor={_item => _item._id}
           data={data}
